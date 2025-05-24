@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default function ExerciseCard({ exercise, toggleLike, liked }) {
+export default function ExerciseCard({ exercise, toggleLike, liked, handleDelete }) {
   return (
     <div className="col-12 col-md-4 mb-4">
       <div className="card h-100 exercise-card position-relative overflow-hidden">
         <img
-          src={exercise.image}
+          src={`http://127.0.0.1:8000/storage/${exercise.image}`}
           alt={exercise.name}
           className="img-fluid"
           style={{ height: '280px', objectFit: 'cover' }}
@@ -13,7 +13,7 @@ export default function ExerciseCard({ exercise, toggleLike, liked }) {
         <div className="exercise-overlay d-flex flex-column justify-content-center align-items-center">
           <h5 className="text-white mb-3 fs-5">{exercise.name}</h5>
           <a
-            href={exercise.videoUrl}
+            href={exercise.videoURL}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-danger btn-sm mb-2"
@@ -25,6 +25,12 @@ export default function ExerciseCard({ exercise, toggleLike, liked }) {
             className={`btn ${liked ? 'btn-success' : 'btn-outline-light'} btn-sm`}
           >
             {liked ? 'Liked ❤️' : 'Like 👍'}
+          </button>
+          <button
+              onClick={() => handleDelete(exercise.id)}
+              className="btn btn-danger btn-sm mt-5"
+            >
+              Delete 🗑️
           </button>
         </div>
       </div>

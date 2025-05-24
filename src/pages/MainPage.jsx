@@ -20,7 +20,6 @@ export default function MainPage({ toggleBackground, bgMode }) {
                 </div>
               ))}
             </div>
-
           </div>
         </div>
       </main>

@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
 
-export default function Navbar({ toggleBackground, bgMode, showOnlyLiked, toggleShowOnlyLiked }) {
+export default function Navbar({
+  toggleBackground,
+  bgMode,
+  showOnlyLiked,
+  toggleShowOnlyLiked,
+  toggleShowAddExercise,
+}) {
   const isDark = bgMode === 'dark';
 
   return (
@@ -61,6 +67,18 @@ export default function Navbar({ toggleBackground, bgMode, showOnlyLiked, toggle
                   🖼️ Fundal {isDark ? 'deschis' : 'închis'}
                 </button>
               </li>
+              <li className="nav-item">
+              <button
+                onClick={() => {
+                  if (typeof toggleShowAddExercise === 'function') {
+                    toggleShowAddExercise(true);
+                  }
+                }}
+                className="btn btn-success"
+              >
+                + Adaugă Exercițiu
+              </button>
+            </li>
             </ul>
           </div>
         </div>
