@@ -1,6 +1,13 @@
 import React from 'react';
 
-export default function ExerciseCard({ exercise, toggleLike, liked, handleDelete, handleEdit }) {
+export default function ExerciseCard({
+  exercise,
+  toggleLike,
+  liked,
+  handleDelete,
+  handleEdit,
+  isLoggedIn
+}) {
   return (
     <div className="col-12 col-md-4 mb-4">
       <div className="card h-100 exercise-card position-relative overflow-hidden">
@@ -26,18 +33,23 @@ export default function ExerciseCard({ exercise, toggleLike, liked, handleDelete
           >
             {liked ? 'Liked ❤️' : 'Like 👍'}
           </button>
-          <button
-              onClick={() => handleEdit(exercise.id)}
-              className="btn btn-warning btn-sm mt-5"
-            >
-              Edit ✏️
-          </button>
-          <button
-              onClick={() => handleDelete(exercise.id)}
-              className="btn btn-danger btn-sm mt-5"
-            >
-              Delete 🗑️
-          </button>
+
+          {isLoggedIn && (
+            <>
+              <button
+                className="btn btn-sm btn-warning me-2 mt-2"
+                onClick={() => handleEdit(exercise.id)}
+              >
+                Edit
+              </button>
+              <button
+                className="btn btn-sm btn-danger mt-2"
+                onClick={() => handleDelete(exercise.id)}
+              >
+                Delete
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

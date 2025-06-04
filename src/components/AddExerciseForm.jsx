@@ -29,10 +29,15 @@ export default function AddExerciseForm() {
     formData.append('name', name);
     formData.append('videoUrl', videoUrl);
     formData.append('muscleGroup', muscleGroup);
+    const token = localStorage.getItem('token');
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/add_back_exercise', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+        },
         body: formData,
       });
 

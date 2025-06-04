@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddExerciseForm from '../components/AddExerciseForm';
+import { jwtDecode } from "jwt-decode";
 
 export default function MuscleDetail({
   toggleBackground,
@@ -26,6 +27,33 @@ export default function MuscleDetail({
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState(false);
+
+
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      setIsLoggedIn(!!token);
+    }, []);
+
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const decoded = jwtDecode(token);
+          console.log('the role is' +  decoded.role)
+          setRole(decoded.role || null);
+          setIsLoggedIn(true);
+        } catch (error) {
+          console.error('Invalid token:', error);
+          setRole(false);
+          setIsLoggedIn(false);
+        }
+      } else {
+        setRole(null);
+        setIsLoggedIn(false);
+      }
+    }, []);
   useEffect(() => {
     if (!muscle) return;
 
@@ -68,11 +96,23 @@ export default function MuscleDetail({
     if (!window.confirm('Are you sure you want to delete this exercise?')) return;
 
     try {
+      const token = localStorage.getItem('token');
+console.log('Token:', token);
+
       const response = await fetch(`http://127.0.0.1:8000/api/delete_exercise/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+        }
       });
 
-      if (!response.ok) throw new Error('Failed to delete');
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('Server error:', data);
+        throw new Error(data.message || 'Failed to delete');
+      }
 
       window.location.reload();
     } catch (error) {
@@ -101,10 +141,15 @@ export default function MuscleDetail({
     if (currentExercise.image instanceof File) {
       formData.append('image', currentExercise.image);
     }
+  const token = localStorage.getItem('token');
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/update_exercise', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+        },
         body: formData
       });
 
@@ -135,6 +180,7 @@ export default function MuscleDetail({
         showOnlyLiked={showOnlyLiked}
         toggleShowOnlyLiked={toggleShowOnlyLiked}
         toggleShowAddExercise={setShowAddExercise}
+        role={role}
       />
 
       <main className="flex-grow-1">
@@ -208,6 +254,8 @@ export default function MuscleDetail({
                     liked={likedExercises.includes(exercise.id)}
                     handleDelete={handleDelete}
                     handleEdit={handleEdit}
+                    isLoggedIn={isLoggedIn}
+                    role={role}
                   />
                 ))}
               </div>

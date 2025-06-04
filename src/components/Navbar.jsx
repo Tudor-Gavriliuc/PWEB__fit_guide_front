@@ -6,6 +6,7 @@ export default function Navbar({
   showOnlyLiked,
   toggleShowOnlyLiked,
   toggleShowAddExercise,
+  role,
 }) {
   const isDark = bgMode === 'dark';
 
@@ -37,7 +38,7 @@ export default function Navbar({
           </button>
 
           <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto gap-4 align-items-center">
+            <ul className="navbar-nav ms-auto gap-3 align-items-center">
               {toggleShowOnlyLiked && (
                 <>
                   <li className="nav-item">
@@ -58,6 +59,7 @@ export default function Navbar({
                   </li>
                 </>
               )}
+
               <li className="nav-item">
                 <button
                   onClick={toggleBackground}
@@ -67,18 +69,35 @@ export default function Navbar({
                   🖼️ Fundal {isDark ? 'deschis' : 'închis'}
                 </button>
               </li>
+
+              {role === 'admin' && (
+                  <li className="nav-item">
+                    <button
+                      onClick={() => {
+                        if (typeof toggleShowAddExercise === 'function') {
+                          toggleShowAddExercise(true);
+                        }
+                      }}
+                      className="btn btn-success"
+                    >
+                      + Adaugă Exercițiu
+                    </button>
+                  </li>
+                )}
+
+
+              {/* 🔐 Login/Register Buttons */}
               <li className="nav-item">
-              <button
-                onClick={() => {
-                  if (typeof toggleShowAddExercise === 'function') {
-                    toggleShowAddExercise(true);
-                  }
-                }}
-                className="btn btn-success"
-              >
-                + Adaugă Exercițiu
-              </button>
-            </li>
+                <Link to="/login" className="btn btn-outline-primary">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/register" className="btn btn-primary">
+                  Register
+                </Link>
+              </li>
+
             </ul>
           </div>
         </div>

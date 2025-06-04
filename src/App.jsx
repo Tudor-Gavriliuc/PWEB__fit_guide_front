@@ -4,6 +4,8 @@ import MainPage from './pages/MainPage';
 import MuscleDetail from './pages/MuscleDetail';
 import darkBg from './assets/dark_theme.png';
 import lightBg from './assets/white_theme.png';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   const [bgMode, setBgMode] = useState('dark');
@@ -58,6 +60,10 @@ function App() {
             />
           }
         />
+        <Route path="/register" element={<RegisterPage toggleBackground={toggleBackground}
+              bgMode={bgMode}/>} />
+        <Route path="/login" element={<LoginPage toggleBackground={toggleBackground}
+              bgMode={bgMode} />} />
       </Routes>
     </BrowserRouter>
   );
